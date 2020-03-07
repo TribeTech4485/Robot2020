@@ -24,8 +24,10 @@ public abstract class IterativeControlMethod {
         methodUpdate();
     }
     public void stop() {
-        _running = false;
         _startTime = -1;
+        _waitEndTime = 0;
+        _running = false;
+        _controlStep = 0;
         methodStop();
     }
     
@@ -37,7 +39,7 @@ public abstract class IterativeControlMethod {
     }
     
     private boolean _checkDoUpdate() {
-        return (_waitEndTime > getRunDuration());
+        return (_waitEndTime < getRunDuration());
     }
     
     protected void setWaitDuration(final double duration_milliseconds) {

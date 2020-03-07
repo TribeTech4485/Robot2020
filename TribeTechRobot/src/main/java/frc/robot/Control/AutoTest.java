@@ -19,13 +19,17 @@ public class AutoTest extends IterativeControlMethod {
         switch (step()) {
         case 0:
             // Drive forward at 10% speed for 250 ms
-            drive.setTankDriveInput(0.1, 0.1);
-            setWaitDuration(250);
+            drive.setTankDriveInput(1, 1);
+            setWaitDuration(500);
             break;
         case 1:
             // Drive backward at 10% speed for 250 ms
-            drive.setTankDriveInput(-0.1, -0.1);
-            setWaitDuration(250);
+            drive.setTankDriveInput(0, 0);
+            setWaitDuration(2000);
+            break;
+        case 2:
+            drive.setTankDriveInput(-1, -1);
+            setWaitDuration(500);
             break;
         default:
             drive.setTankDriveInput(0, 0);
@@ -34,7 +38,7 @@ public class AutoTest extends IterativeControlMethod {
 
     @Override
     protected void methodStop() {
-        
+        System.out.println("Auto Stop");
     }
     
 }

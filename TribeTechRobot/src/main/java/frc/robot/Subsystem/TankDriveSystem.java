@@ -31,6 +31,7 @@ public class TankDriveSystem extends Subsystem {
     protected void initSystem() {
         for (int i = 0; i < leftDriveMotor.length; i++) {
             leftDriveMotor[i] = new CANSparkMax(map.leftDriveMotor_ID[i], MotorType.kBrushless);
+            leftDriveMotor[i].setOpenLoopRampRate(1);
         }
         for (int i = 0; i < rightDriveMotor.length; i++) {
             rightDriveMotor[i] = new CANSparkMax(map.rightDriveMotor_ID[i], MotorType.kBrushless);
@@ -39,8 +40,8 @@ public class TankDriveSystem extends Subsystem {
 
     @Override
     protected void updateSystem() {
-        setDrive(leftDriveMotor, rawTankDriveInput[1]);
-        setDrive(rightDriveMotor, -rawTankDriveInput[0]);
+        setDrive(leftDriveMotor, rawTankDriveInput[0]);
+        setDrive(rightDriveMotor, -rawTankDriveInput[1]);
     }
 
     @Override
