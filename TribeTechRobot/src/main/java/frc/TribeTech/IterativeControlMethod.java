@@ -55,7 +55,13 @@ public abstract class IterativeControlMethod {
     protected int step() {
         // return the current step and iterrate the current control step
         return _controlStep++;
-    } 
+    }
+    protected int revertStep() {
+        return revertStep(1);
+    }
+    protected int revertStep(int steps) {
+        return _controlStep -= steps;
+    }
 
     protected abstract void methodInit();
     protected abstract void methodUpdate();
