@@ -61,6 +61,9 @@ public class RobotMap {
     public int[] gearShiftSolenoid_ID = {0, 1};   // in, out
 
     //// Digital Sensor IDs
+    public boolean deliverySensorsConnected = false;
+    public int collectorBallSensor_DIGITAL = 0;             // Sensor for the last collected ball
+    public int[] conveyorBallSensor_DIGITAL = {1, 2, 3, 4};    // Bottom to top
 
     //// Analog Sensor IDs
 
