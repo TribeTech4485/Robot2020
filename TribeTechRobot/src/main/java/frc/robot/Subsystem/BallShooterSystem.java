@@ -18,6 +18,12 @@ public class BallShooterSystem extends Subsystem {
     private PIDController shooterPID[] = new PIDController[numShooterMotors];
 
     private double _targetRPM = 0;
+    private double _targetTolleranceRPM = 200;
+    private boolean _onTarget = false;
+
+    public boolean isOnTarget() {
+        return _onTarget;
+    }
 
     public void setTargetRPM(double target) {
         _targetRPM = target;
@@ -42,6 +48,7 @@ public class BallShooterSystem extends Subsystem {
 
     @Override
     protected void updateSystem() {
+        _onTarget = true;
         for (int i = 0; i < numShooterMotors; i++) {
             double setVal = 0;
 
@@ -51,6 +58,8 @@ public class BallShooterSystem extends Subsystem {
 
                 double currentVelocity = shooterEncoder[i].getVelocity();
                 double error = targetVelocity - currentVelocity;
+
+                if (Math.abs(error) > _targetTolleranceRPM) _onTarget = false;
 
                 // Live PID Tuning hack start
                 SPID shooterSPID = shooterPID[i].getSPID();
