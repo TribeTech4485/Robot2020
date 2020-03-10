@@ -30,6 +30,9 @@ public abstract class Subsystem {
     protected void startWait(double duration_millisecond) {
         _timeWaitEnd = _timeDuration + duration_millisecond;
     }
+    protected void stopWait() {
+        _timeWaitEnd = 0;
+    }
     private void updateTime() {
         if (_timeStart < 0) return;
         _timeDuration = System.currentTimeMillis() - _timeStart; 
