@@ -24,25 +24,29 @@ public class AutoShooterTest extends IterativeControlMethod {
     protected void methodUpdate() {
         switch (step()) {
         case 0:
-            drive.setTankDriveInput(-0.05, -0.05);
+            drive.setTankDriveInput(-0.1, -0.1);
             setWaitDuration(1000);
             break;
         case 1:
-            drive.setTankDriveInput(0, 0);
+            drive.setTankDriveInput(0.1, 0.1);
+            setWaitDuration(1000);
             break;
         case 2:
+            drive.setTankDriveInput(0, 0);
+            break;
+        case 3:
             // Spin up the shooter
             shooter.setTargetRPM(3000);
             if (!shooter.isOnTarget()) revertStep();    // Wait until the shooter starts
             break;
-        case 3:
+        case 4:
             ballDelivery.deliverBalls();
             break;
-        case 4:
+        case 5:
             if (ballDelivery.isDeliveringBalls()) revertStep();     // Wait until the delivery system is done
             if (!ballDelivery.isEmpty()) revertStep(2);
             break;
-        case 5:
+        case 6:
             shooter.setTargetRPM(0);
             break;
         default:
