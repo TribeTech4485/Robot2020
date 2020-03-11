@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
         // Create an auto selector on the smart dashboard
         autoChooser.setDefaultOption("Default (None)", defaultAutoControlMethod);
         autoChooser.addOption("Auto Test", new AutoTest());
+        autoChooser.addOption("Auto Shooter Test", new AutoShooterTest());
+
         SmartDashboard.putData("Auto Selector", autoChooser);
     }
 
