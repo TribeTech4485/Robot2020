@@ -74,16 +74,17 @@ public class TeleOpControl extends IterativeControlMethod {
         //     rightDrive = Math.pow(rightDrive, 3) + 0.1 * rightDrive;
         // }
 
-        drive.setTankDriveInput(leftDrive, rightDrive);
+        drive.setTankDriveInput(leftDrive / 2, rightDrive / 2);
         SmartDashboard.putNumber("Left Drive Percent", leftDrive);
         SmartDashboard.putNumber("Right Drive Percent", rightDrive);
 
         SmartDashboard.putNumber("PDP Current", pdp.getTotalCurrent());
 
         if (mainController.getBumper(Hand.kRight)) {
-            shooter.setTargetRPM(3000);
+            shooter.setTargetRPM(5000);
             if (shooter.isOnTarget()) {
-                delivery.deliverBalls();
+                System.out.println("Shooter On Target");
+                //delivery.deliverBalls();
             }
         } else {
             delivery.cancelDeliverBalls();

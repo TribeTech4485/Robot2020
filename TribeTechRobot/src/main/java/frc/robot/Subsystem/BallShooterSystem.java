@@ -18,10 +18,11 @@ public class BallShooterSystem extends Subsystem {
     private PIDController shooterPID[] = new PIDController[numShooterMotors];
 
     private double _targetRPM = 0;
-    private double _targetTolleranceRPM = 200;
+    private double _targetTolleranceRPM = -1;
     private boolean _onTarget = false;
 
     public boolean isOnTarget() {
+        if (_targetTolleranceRPM < 0) return true;
         return _onTarget;
     }
 
@@ -58,7 +59,7 @@ public class BallShooterSystem extends Subsystem {
 
                 double currentVelocity = shooterEncoder[i].getVelocity();
                 double error = targetVelocity - currentVelocity;
-
+                System.out.println(currentVelocity);
                 if (Math.abs(error) > _targetTolleranceRPM) _onTarget = false;
 
                 // Live PID Tuning hack start

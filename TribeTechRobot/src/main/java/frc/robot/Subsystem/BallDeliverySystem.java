@@ -22,8 +22,8 @@ public class BallDeliverySystem extends Subsystem{
     private boolean _finishedDelivering = false;
     private int _conveyToPosition = 0;
 
-    private double _collectSpeed = 1.0;
-    private double _conveySpeed = 0.3;
+    private double _collectSpeed = -0.3;
+    private double _conveySpeed = 1.0;
 
     private int _totalBallsCollected = 0;
     private int _totalBallsConveyed = 0;
@@ -51,6 +51,10 @@ public class BallDeliverySystem extends Subsystem{
 
     public void setCollector(boolean collecting) {
         _collecting = collecting;
+    }
+    public void setManualConvey(boolean conveying) {
+        if (map.deliverySensorsConnected) return;
+        _conveying = conveying;
     }
     public void setExpelling(boolean expelling) {
         _expelling = expelling;
