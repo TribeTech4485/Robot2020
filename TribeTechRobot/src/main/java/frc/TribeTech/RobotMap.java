@@ -56,6 +56,9 @@ public class RobotMap {
     public int collectorMotor_ID = 7;
     public int conveyorMotor_ID = 10;
 
+    public int hookLowerMotor_ID = 11;
+    public int hookRaiseMotor_ID = 12;
+
     //// Pneumatic IDs
     public int pcm_ID = 0;
     public int[] gearShiftSolenoid_ID = {0, 1};   // in, out

@@ -9,7 +9,6 @@ public abstract class IterativeControlMethod {
     
     private int _controlStep = 0;
     
-    
     public IterativeControlMethod() {
         
     }

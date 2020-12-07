@@ -4,12 +4,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 import frc.TribeTech.Subsystem;
 
 public class BallDeliverySystem extends Subsystem{
 
     //// Includes both the collector and conveyor systems
-
     private CANSparkMax collectorMotor;
     private CANSparkMax conveyorMotor;
     private DigitalInput collectorBallSensor;
@@ -31,7 +32,23 @@ public class BallDeliverySystem extends Subsystem{
     private boolean[] _ballInPosition = new boolean[map.conveyorBallSensor_DIGITAL.length + 1];
     private boolean[] _ballInPositionLast = new boolean[_ballInPosition.length];
 
-    public int getBallsCollected() {
+    private static final Joystick auxController = new Joystick(1);    // aux controller setup
+    // Logitech Gamepad buttons
+    public static final int kLogiTechButtonA = 1; // Bottom Button
+    public static final int kLogiTechButtonB = 2; // Right Button
+    //public static final int kLogiTechButtonX = 3; // Left Button
+    //public static final int kLogiTechButtonY = 4; // Top Button
+    //public static final int kLogiTechBumperLeft = 5; // on front of controller
+    //public static final int kLogiTechBumperRight = 6;
+    //public static final int kLogiTechStickLeft = 7;  // on front of controller
+    //public static final int kLogiTechStickRight = 8;
+
+    private static boolean auxButtonAToggle = true;  // keeps track of when button pressed and repressed
+    private static boolean auxButtonBToggle = true;
+    private static boolean conveyorOn = true;	//start with true so 1st press turns on
+    private static boolean collectorOn = true;
+
+     public int getBallsCollected() {
         return _totalBallsCollected;
     }
     public int getBallsConveyed() {
@@ -77,14 +94,57 @@ public class BallDeliverySystem extends Subsystem{
         for (int i = 0; i < conveyorBallSensor.length; i++) {
             conveyorBallSensor[i] = new DigitalInput(map.conveyorBallSensor_DIGITAL[i]);
         }
-
     }
 
     @Override
     protected void updateSystem() {
+
+        //** Larry 
+        //https://www.chiefdelphi.com/t/java-toggle-button/122156
+        boolean auxButtonAPressed = auxController.getRawButtonPressed(kLogiTechButtonA);  // check if button pressed 
+        if (auxButtonAToggle && auxButtonAPressed) {  	// Only execute once per Button push
+            auxButtonAToggle = false;  // Prevents this section of code from being called again until Button is released and re-pressed
+            if (conveyorOn) {  // Decide which way to set the motor this time through
+                conveyorOn = false;
+                conveyorMotor.set(_conveySpeed);    // turn on conveyor motor
+            } else {
+                conveyorOn = true;
+                conveyorMotor.set( 0 );     // turn off conveyor motor
+            }
+        } else if (!auxButtonAPressed) { 
+            auxButtonAToggle = true; // Button has been released, so allows button re-press to activate code above
+        }
+
+        boolean auxButtonBPressed = auxController.getRawButtonPressed(kLogiTechButtonB);  // check if button pressed 
+        if (auxButtonBToggle && auxButtonBPressed) {  	// Only execute once per Button push
+            auxButtonBToggle = false;  // Prevents this section of code from being called again until Button is released and re-pressed
+            if (collectorOn) {  // Decide which way to set the motor this time through
+                collectorOn = false;
+                collectorMotor.set(_collectSpeed);  // turn on collector motor
+            } else {
+                collectorOn = true;
+                collectorMotor.set(0);  // turn on collector motor
+            }
+        } else if (!auxButtonBPressed) { 
+            auxButtonBToggle = true; // Button has been released, so allows button re-press to activate code above
+        }
+     
+        /*
+        // ***** remove this after test
+        auxButtonAPressed = auxController.getRawButtonPressed(kLogiTechButtonA);
+        if (auxButtonAPressed) {
+            auxButtonACount++;
+            if ( auxButtonACount % 2 == 0 ) {   
+                conveyorMotor.set(_conveySpeed);    // turn on motor every even count
+            } else {
+                conveyorMotor.set( 0 );
+            }
+        }
+        //** end Larry
+
         // Update the last Ball Position array
         _ballInPositionLast = _ballInPosition;
-        
+        /*
         // Update the ball position array
         _ballInPosition[0] = collectorBallSensor.get();
         for (int i = 0; i < conveyorBallSensor.length; i++) {
@@ -93,7 +153,7 @@ public class BallDeliverySystem extends Subsystem{
         
         if (!_ballInPositionLast[0] && _ballInPosition[0]) _totalBallsCollected++;
         if (!_ballInPositionLast[_ballInPositionLast.length - 1] && _ballInPosition[_ballInPosition.length - 1]) _totalBallsConveyed++;
-        
+
         // Check if we should iterrate the conveyor
         if (_ballInPosition[0]) {
             // Check if there are any free spots
@@ -142,7 +202,21 @@ public class BallDeliverySystem extends Subsystem{
             if (_conveying) conveyorMotor.set(_conveySpeed);
             else conveyorMotor.set(0);
         }
-
+        */
+    }
+   
+    // larry
+    public void turnOnConveyor() {
+        conveyorMotor.set(_conveySpeed); 
+    }
+    public void turnOffConveyor() {
+        conveyorMotor.set( 0 ); 
+    }
+    public void turnOnCollector() {
+        collectorMotor.set(_collectSpeed);
+    }
+    public void turnOffCollector() {
+        collectorMotor.set( 0 ); 
     }
 
     @Override
