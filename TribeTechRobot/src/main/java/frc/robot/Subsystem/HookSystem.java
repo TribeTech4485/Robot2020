@@ -28,7 +28,7 @@ public class HookSystem extends Subsystem {
     public static final int kHookTickHigh = 4500;
     public static final int kHookTickLow = 0;
 
-    private static final Joystick auxController = new Joystick(1);    // aux controller setup
+    //**private static final Joystick auxController = new Joystick(1);    // aux controller setup
 
     // Logitech Gamepad axis
     //public static final int kLogiTechAxisLeftStickX = 1;
@@ -50,22 +50,24 @@ public class HookSystem extends Subsystem {
     //public static final int kLogiTechButtonBack = 9;  // Small button top left
     //public static final int kLogiTechButtonStart = 10; // Small button top right
 
-    private static boolean auxButtonXToggle = true; // keeps track of when button pressed and repressed
-    private static boolean auxButtonYToggle = true;
-    private static boolean auxBumperLeftToggle = true;
+    //private static boolean auxButtonXToggle = true; // keeps track of when button pressed and repressed
+    //private static boolean auxButtonYToggle = true;
+    //private static boolean auxBumperLeftToggle = true;
     //private static boolean auxBumperRightToggle = true;
-    private static boolean hookMotorRaiseOn = true;	// start with true so 1st press turns on
-    private static boolean hookMotorLowerOn = true;
-    private static boolean hookMotorRaiseReverseOn = true;
+    //private static boolean hookMotorRaiseOn = true;	// start with true so 1st press turns on
+    //private static boolean hookMotorLowerOn = true;
+    //private static boolean hookMotorRaiseReverseOn = true;
     //private static boolean hookMotorLowerReverseOn = true;
 
-    private static int kAmpsMax = 40;
+    //private static int kAmpsMax = 40;
 
     @Override
     protected void initSystem() {
         // Initialize HookSubsystem motors
+        /*
         hookMotorLower = new CANSparkMax(map.hookLowerMotor_ID, MotorType.kBrushless);
         hookMotorRaise = new CANSparkMax(map.hookRaiseMotor_ID, MotorType.kBrushless);
+
         hookMotorLower.restoreFactoryDefaults();
         hookMotorRaise.restoreFactoryDefaults();
     
@@ -85,13 +87,15 @@ public class HookSystem extends Subsystem {
         hookMotorLowerEncoder.setPositionConversionFactor(encoderTicksPerRevolution);
         hookMotorRaiseEncoder.setPositionConversionFactor(encoderTicksPerRevolution);
         hookMotorLowerEncoder.setPosition(0);
-        hookMotorRaiseEncoder.setPosition(0);
+        hookMotorRaiseEncoder.setPosition(0); 
+        */
     }
 
     @Override
     protected void updateSystem() {
 
         //https://www.chiefdelphi.com/t/java-toggle-button/122156
+        /*
         // Logitech Button X controls motor to raise hook
         boolean auxButtonXPressed = auxController.getRawButtonPressed(kLogiTechButtonX);  // check if button pressed 
         if (auxButtonXToggle && auxButtonXPressed) {  	// Only execute once per Button push
@@ -139,6 +143,7 @@ public class HookSystem extends Subsystem {
         } else if (!auxBumperLeftPressed) {
             auxBumperLeftToggle = true; // Button has been released, so allows button re-press to activate code above
         }
+        */
 
         /*
         // Logitech right bumper controls motor to raise to be lowered after match - disabled by Dylan request
@@ -147,9 +152,11 @@ public class HookSystem extends Subsystem {
             auxBumperRightToggle = false;  // Prevents this section of code from being called again until Button is released and re-pressed
             if (hookMotorLowerReverseOn) {  // Decide which way to set the motor this time through
                 hookMotorLowerReverseOn = false;
-                hookMotorLower.set(-0.50);   // turn on lower motor
+                //hookMotorLower.set(-0.50);   // turn on lower motor
+                hookMotorLower.setIdleMode(IdleMode.kCoast);    // Set idle mode
             } else {
                 hookMotorLowerReverseOn = true;
+                hookMotorLower.setIdleMode(IdleMode.kCoast);    // Set idle mode
                 hookMotorLower.set(0);
             }
         } else if (!auxBumperRightPressed) {
@@ -157,11 +164,14 @@ public class HookSystem extends Subsystem {
         }
         */
 
+        /*
         // check voltage, temperature
         SmartDashboard.putNumber("Voltage Lower", hookMotorLower.getBusVoltage());
         SmartDashboard.putNumber("Temp Lower", hookMotorLower.getMotorTemperature());
         SmartDashboard.putNumber("Output Lower", hookMotorLower.getAppliedOutput());
         SmartDashboard.putNumber("Current Lower", hookMotorLower.getOutputCurrent());
+
+        */
 
     }
 

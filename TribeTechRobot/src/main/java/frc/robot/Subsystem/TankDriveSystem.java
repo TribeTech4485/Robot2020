@@ -15,6 +15,8 @@ public class TankDriveSystem extends Subsystem {
 
     // TankDrive methods
     public void setTankDriveInput(double left, double right) {
+        left = left * 0.60;
+        right = right * 0.60;
         rawTankDriveInput[0] = left;
         rawTankDriveInput[1] = right;
     }

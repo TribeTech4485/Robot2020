@@ -47,8 +47,8 @@ public class TeleOpControl extends IterativeControlMethod {
     public static final int kLogiTechButtonB = 2; // Right Button
     //public static final int kLogiTechButtonX = 3; // Left Button
     //public static final int kLogiTechButtonY = 4; // Top Button
-    //public static final int kLogiTechBumperLeft = 5; // on front of controller
-    //public static final int kLogiTechBumperRight = 6;
+    public static final int kLogiTechBumperLeft = 5; // on front of controller
+    public static final int kLogiTechBumperRight = 6;
     //public static final int kLogiTechButtonBack = 7;
     //public static final int kLogiTechButtonStart = 8;
     //public static final int kLogiTechStickLeft = 9;  // on front of controller
@@ -111,7 +111,7 @@ public class TeleOpControl extends IterativeControlMethod {
 
         SmartDashboard.putNumber("PDP Current", pdp.getTotalCurrent());
 
-        // larry
+        // *** Larry
         //https://www.chiefdelphi.com/t/java-toggle-button/122156
         boolean auxButtonAPressed = auxController.getRawButtonPressed(kLogiTechButtonA);  // check if button pressed 
         if (auxButtonAToggle && auxButtonAPressed) {  	// Only execute once per Button push
@@ -142,35 +142,31 @@ public class TeleOpControl extends IterativeControlMethod {
         } else if (!auxButtonBPressed) { 
             auxButtonBToggle = true; // Button has been released, so allows button re-press to activate code above
         }
-        // end larry
+        // *** end Larry ***
 
-        /*
-        // larry - switch shooter control from xbox bumper to logitech right stick
-        //if (mainController.getBumper(Hand.kRight)) {
-        for (int xx = 1; xx <= 12; xx++) {
-            System.out.println("button " + xx +" raw: "+ auxController.getRawButton(xx) +" press: "+ auxController.getRawButtonPressed(xx));
-            if (xx <= 6) {
-                System.out.println("axis " + xx + " " + auxController.getRawAxis(xx));
-            }
-        }
-        // alternate? 
-        //auxController.getX(Hand.kRight), auxController.getY(Hand.kRight), auxController.getZ()
-        System.out.println("getX: " + auxController.getX(Hand.kLeft) +" "+ auxController.getX(Hand.kRight));
-        System.out.println("getY: " + auxController.getY(Hand.kLeft) +" "+ auxController.getY(Hand.kRight));
-        System.out.println("getZ: " + auxController.getZ() +" "+ auxController.getZChannel());
-        */
-
-        // value>0 if just right trigger pressed, value<0 if just left trigger pressed, both=sum left+right=0
-        if (auxController.getRawAxis(kLogiTechAxisTriggers) > 0.80) {
-            shooter.setTargetRPM(4500);
+        // *** Larry *****
+        // control shooter speed with Logitech controller
+        if (auxController.getRawButton(kLogiTechBumperLeft)) {
+            shooter.setTargetRPM(-1900);
             if (shooter.isOnTarget()) {
-                System.out.println("Shooter On Target");
+                System.out.println("Shooter On Target at -1900");
                 //delivery.deliverBalls();
             }
-        } else {
-            delivery.cancelDeliverBalls();
-            shooter.setTargetRPM(0);
         }
+        if (auxController.getRawButton(kLogiTechBumperRight)) {
+            shooter.setTargetRPM(-1750);
+            if (shooter.isOnTarget()) {
+                System.out.println("Shooter On Target at -1750");
+                //delivery.deliverBalls();
+            }
+        }
+        // https://www.chiefdelphi.com/t/commands-activated-by-trigger-how/130010/5
+        // value>0 if just right trigger pressed, value<0 if just left trigger pressed, both=sum left+right=0
+        if (auxController.getRawAxis(kLogiTechAxisTriggers) > 0.4) {
+            shooter.setTargetRPM(0);
+            System.out.println("Shooter stopped");
+        }
+        // *** end Larry ***
 
         // larry - following line not needed now
         //delivery.setCollector(mainController.getBumper(Hand.kLeft));

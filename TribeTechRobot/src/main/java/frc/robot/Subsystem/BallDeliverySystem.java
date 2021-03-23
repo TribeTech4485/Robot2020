@@ -21,7 +21,7 @@ public class BallDeliverySystem extends Subsystem{
     private boolean _expelling = false;
     private boolean _delivering = false;
     private boolean _finishedDelivering = false;
-    private int _conveyToPosition = 0;
+    //private int _conveyToPosition = 0;
 
     private double _collectSpeed = -0.3;
     private double _conveySpeed = 1.0;
@@ -30,7 +30,7 @@ public class BallDeliverySystem extends Subsystem{
     private int _totalBallsConveyed = 0;
     
     private boolean[] _ballInPosition = new boolean[map.conveyorBallSensor_DIGITAL.length + 1];
-    private boolean[] _ballInPositionLast = new boolean[_ballInPosition.length];
+    //private boolean[] _ballInPositionLast = new boolean[_ballInPosition.length];
 
     private static final Joystick auxController = new Joystick(1);    // aux controller setup
     // Logitech Gamepad buttons
